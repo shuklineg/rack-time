@@ -1,8 +1,4 @@
 require_relative 'app'
-require_relative 'middleware/param_filter'
-require_relative 'middleware/date_format'
+require_relative 'lib/formated_date'
 
-use DateFormat
-use ParamFilter
 run App.new
-

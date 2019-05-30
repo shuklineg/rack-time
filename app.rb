@@ -1,24 +1,25 @@
 class App
-  FORMAT = {
-    date: {
-      'year' => '%Y',
-      'month' => '%m',
-      'day' => '%d'
-    },
-    time: {
-      'hour' => '%H',
-      'minute' => '%M',
-      'second' => '%S'
-    }
-  }.freeze
-
-  attr_accessor :params, :method, :path, :format
-
   def call(env)
-    request = Rack::Request.new(env)
-    @method = request.request_method
-    @path = request.path
-    @format = request.params['format'] || ''
-    [200, { 'Content-type' => 'text/plan' }, []]
+    @request = Rack::Request.new(env)
+    if @request.path == '/time' && @request.request_method == 'GET'
+      handle_time
+    else
+      not_found
+    end
+  end
+
+  private
+
+  def not_found
+    [404, headers, []]
+  end
+
+  def handle_time
+    date = FormatedDate.new(DateTime.now, @request.params['format'])
+    [date.valid? ? 200 : 400, headers, [date.to_s || date.error_str]]
+  end
+
+  def headers
+    { 'Content-type' => 'text/plan' }
   end
 end
