@@ -11,6 +11,7 @@ class FormatedDate
       'second' => '%S'
     }
   }.freeze
+  UNKNOWN = 'Unknown time format [%s]'.freeze
 
   attr_reader :date_str, :unknown_format
 
@@ -26,7 +27,7 @@ class FormatedDate
   end
 
   def error_str
-    "Unknown time format [#{@unknown_format.join(',')}]" unless valid?
+    UNKNOWN % @unknown_format.join(',') unless valid?
   end
 
   def to_s
