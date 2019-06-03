@@ -1,2 +1,2 @@
-Simple Rake application
+Simple Rack application
 
